@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QGuiApplication>
+#include <QScreen>
 
 ScreenWidget::ScreenWidget(QWidget *parent)
     : QWidget(parent),
@@ -36,12 +37,12 @@ void ScreenWidget::updateRemoteCursorPosition()
 {
     QPoint globalPos = QCursor::pos();
 
-     QScreen* currentScreen = QGuiApplication::screenAt(globalPos);
+    QScreen* currentScreen = QGuiApplication::screenAt(globalPos);
     if (!currentScreen) return;
 
-      QRect screenGeometry = currentScreen->geometry();
+    QRect screenGeometry = currentScreen->geometry();
     if (screenGeometry.contains(globalPos)) {
-         remoteCursorPos = QPoint(globalPos.x() - screenGeometry.x(),
+        remoteCursorPos = QPoint(globalPos.x() - screenGeometry.x(),
                                  globalPos.y() - screenGeometry.y());
         update();
     }
@@ -96,7 +97,7 @@ void ScreenWidget::paintEvent(QPaintEvent *event)
     painter.fillRect(rect(), QColor(45, 45, 48));
 
     if (!screenPixmap.isNull()) {
-        QPixmap scaledPixmap = screenPixmap.scaled(
+            QPixmap scaledPixmap = screenPixmap.scaled(
             screenPixmap.size() * scaleFactor,
             Qt::KeepAspectRatio,
             Qt::SmoothTransformation
@@ -176,6 +177,10 @@ void ScreenWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ScreenWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    if(screenPixmap.isNull()) {event->ignore(); return;}
+
+    QPoint screenPos = convertWidgetToScreenPos(event->pos());
+    emit mouseMoved(screenPos);
     update();
     event->accept();
 }

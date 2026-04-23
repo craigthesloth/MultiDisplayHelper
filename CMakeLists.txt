@@ -15,9 +15,16 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+        src/mainwindow/mainwindow.cpp
+        src/mainwindow/mainwindow.h
+        src/mainwindow/mainwindow.ui
+        src/screen_widget/screen_widget.h
+        src/screen_widget/screen_widget.cpp
+        src/mouse_controller/mouse_controller.h
+        src/mouse_controller/mouse_controller.cpp
+        src/screen_capturer/screen_capturer.h
+        src/screen_capturer/screen_capturer.cpp
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -43,6 +50,7 @@ else()
     else()
         add_executable(MultiDisplayHelper
             ${PROJECT_SOURCES}
+
         )
     endif()
 endif()

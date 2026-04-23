@@ -248,6 +248,6 @@ void MainWindow::onAboutButton()
     QMessageBox::about(this, "About MultiDisplayHelper",
                        "MultiDisplay Helper\n\n"
                        "A tool for capturing and controlling multiple screens.\n"
-                       "Made by P.Sobin"
+                       "Made by P.Sobin.\n"
                        "Version 1.02 BETA");
 }
