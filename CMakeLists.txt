@@ -24,16 +24,14 @@ set(PROJECT_SOURCES
         src/mouse_controller/mouse_controller.cpp
         src/screen_capturer/screen_capturer.h
         src/screen_capturer/screen_capturer.cpp
-
+        src/popout_window/popout_window.h
+        src/popout_window/popout_window.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(MultiDisplayHelper
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        screen_capturer.h screen_capturer.cpp
-        mouse_controller.h mouse_controller.cpp
-        screen_widget.h screen_widget.cpp
         ${QRC_FILES}
     )
 # Define target properties for Android with Qt 6 as:
@@ -50,10 +48,21 @@ else()
     else()
         add_executable(MultiDisplayHelper
             ${PROJECT_SOURCES}
+            src/popout_window/popout_window.h src/popout_window/popout_window.cpp
 
         )
     endif()
 endif()
+
+target_include_directories(MultiDisplayHelper PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/popout_window
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/screen_widget
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/screen_widget
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/mouse_controller
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/screen_capturer
+)
+
 
 target_link_libraries(MultiDisplayHelper PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
