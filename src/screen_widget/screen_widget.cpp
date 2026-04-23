@@ -157,6 +157,11 @@ void ScreenWidget::mousePressEvent(QMouseEvent *event)
 
      emit mouseMoved(screenPos);
 
+
+     //drug'n'drop feature;
+    isDragging = true;
+    draggingButton = event->button();
+
     emit mousePressed(screenPos, event->button());
 
     event->accept();
@@ -170,8 +175,12 @@ void ScreenWidget::mouseReleaseEvent(QMouseEvent *event)
     }
 
     QPoint screenPos = convertWidgetToScreenPos(event->pos());
-    emit mouseReleased(screenPos, event->button());
-
+    if (isDragging) {
+        emit mouseDragged(screenPos, draggingButton);
+        emit mouseReleased(screenPos, event->button());
+        isDragging = false;
+        draggingButton = Qt::NoButton;
+    }
     event->accept();
 }
 
@@ -180,7 +189,13 @@ void ScreenWidget::mouseMoveEvent(QMouseEvent *event)
     if(screenPixmap.isNull()) {event->ignore(); return;}
 
     QPoint screenPos = convertWidgetToScreenPos(event->pos());
-    emit mouseMoved(screenPos);
+
+    if (isDragging) {
+        emit mouseDragged(screenPos, draggingButton);
+    } else {
+        emit mouseMoved(screenPos);
+    }
+
     update();
     event->accept();
 }
