@@ -7,8 +7,9 @@
 #include <QTimer>
 #include <QGuiApplication>
 #include <QElapsedTimer>
+#include "IScreenCapturer.h"
 
-class ScreenCapturer : public QObject
+class ScreenCapturer : public QObject, IScreenCapturer
 {
     Q_OBJECT
 
@@ -16,8 +17,8 @@ public:
     explicit ScreenCapturer(QObject *parent = nullptr);
     ~ScreenCapturer();
 
-    bool initialize(int screenIndex = 1);
-    QPixmap captureScreen();
+    bool initialize(int screenIndex = 1) override;
+    QPixmap captureScreen() override;
 
     void setTargetFps(int fps);
     int getCurrentFps() const;

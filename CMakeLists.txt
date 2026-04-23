@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         src/screen_capturer/screen_capturer.cpp
         src/popout_window/popout_window.h
         src/popout_window/popout_window.cpp
+        src/interfaces/IMouseController.h
+        src/interfaces/IScreenCapturer.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -49,6 +51,8 @@ else()
         add_executable(MultiDisplayHelper
             ${PROJECT_SOURCES}
             src/popout_window/popout_window.h src/popout_window/popout_window.cpp
+            src/interfaces/IMouseController.h
+            src/interfaces/IScreenCapturer.h
 
         )
     endif()
@@ -61,6 +65,7 @@ target_include_directories(MultiDisplayHelper PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/screen_widget
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mouse_controller
     ${CMAKE_CURRENT_SOURCE_DIR}/src/screen_capturer
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/interfaces
 )
 
 

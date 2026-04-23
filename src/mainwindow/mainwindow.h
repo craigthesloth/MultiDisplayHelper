@@ -9,9 +9,9 @@
 #include <QComboBox>
 #include <QSpinBox>
 
-#include "../screen_capturer/screen_capturer.h"
-#include "../mouse_controller/mouse_controller.h"
-#include "../screen_widget/screen_widget.h"
+#include "screen_capturer.h"
+#include "mouse_controller.h"
+#include "screen_widget.h"
 
 class MainWindow : public QMainWindow
 {
