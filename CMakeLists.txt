@@ -53,6 +53,7 @@ else()
             src/popout_window/popout_window.h src/popout_window/popout_window.cpp
             src/interfaces/IMouseController.h
             src/interfaces/IScreenCapturer.h
+            src/interfaces/IPopOutWindow.h
 
         )
     endif()

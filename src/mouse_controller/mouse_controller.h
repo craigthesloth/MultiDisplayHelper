@@ -12,7 +12,7 @@
 #include <windows.h>
 #endif
 
-class MouseController : public QObject, IMouseController
+class MouseController : public QObject, public IMouseController
 {
     Q_OBJECT
 

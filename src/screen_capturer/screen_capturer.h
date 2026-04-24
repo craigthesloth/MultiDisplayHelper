@@ -9,7 +9,7 @@
 #include <QElapsedTimer>
 #include "IScreenCapturer.h"
 
-class ScreenCapturer : public QObject, IScreenCapturer
+class ScreenCapturer : public QObject, public IScreenCapturer
 {
     Q_OBJECT
 
@@ -20,16 +20,16 @@ public:
     bool initialize(int screenIndex = 1) override;
     QPixmap captureScreen() override;
 
-    void setTargetFps(int fps);
-    int getCurrentFps() const;
+    void setTargetFps(int fps) override;
+    int getCurrentFps() const override;
 
 public slots:
-    void startCapture();
-    void stopCapture();
+    void startCapture() override;
+    void stopCapture() override;
 
 signals:
-    void screenCaptured(const QPixmap &pixmap);
-    void fpsUpdated(int fps);
+    void screenCaptured(const QPixmap &pixmap) override;
+    void fpsUpdated(int fps) override;
 
 private slots:
     void onCaptureTimeout();

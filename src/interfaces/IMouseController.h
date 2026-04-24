@@ -12,15 +12,15 @@ public:
     IMouseController() = default;
     ~IMouseController() = default;
 
-    virtual bool initialize(int targetScreenindex);
-    virtual void sendMouseClick(const QPoint &position, Qt::MouseButton button = Qt::LeftButton);
-    virtual void sendMouseMove(const QPoint &position);
-    virtual void sendMousePress(const QPoint &position, Qt::MouseButton button = Qt::LeftButton);
-    virtual void sendMouseRelease(const QPoint &position, Qt::MouseButton button = Qt::LeftButton);
-    virtual void sendMouseWheel(const QPoint &position, int delta);
+    virtual bool initialize(int targetScreenindex) = 0;
+    virtual void sendMouseClick(const QPoint &position, Qt::MouseButton button = Qt::LeftButton) = 0;
+    virtual void sendMouseMove(const QPoint &position) = 0;
+    virtual void sendMousePress(const QPoint &position, Qt::MouseButton button = Qt::LeftButton) = 0;
+    virtual void sendMouseRelease(const QPoint &position, Qt::MouseButton button = Qt::LeftButton) = 0;
+    virtual void sendMouseWheel(const QPoint &position, int delta)= 0;
 
-    virtual QRect getScreenGeometry();
-    virtual QPoint getScreenOffset();
+    virtual QRect getScreenGeometry() = 0;
+    virtual QPoint getScreenOffset() = 0;
 
 };
 

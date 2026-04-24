@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
+#include "mouse_controller.h"
+#include "screen_capturer.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,6 +19,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete mouseController;
+    mouseController = nullptr;
+
+    delete screenCapturer;
+    screenCapturer = nullptr;
+
+    delete screenWidget;
+    screenWidget = nullptr;
 }
 
 void MainWindow::setupUI()
@@ -77,9 +87,9 @@ void MainWindow::setupUI()
 
 void MainWindow::setupConnections()
 {
-    connect(screenCapturer, &ScreenCapturer::screenCaptured,
+    connect(screenCapturer, &IScreenCapturer::screenCaptured,
             this, &MainWindow::onScreenCaptured);
-    connect(screenCapturer, &ScreenCapturer::fpsUpdated,
+    connect(screenCapturer, &IScreenCapturer::fpsUpdated,
             this, &MainWindow::onFpsUpdated);
 
     connect(startButton, &QPushButton::clicked,

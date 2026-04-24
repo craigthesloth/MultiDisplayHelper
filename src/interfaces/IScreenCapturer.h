@@ -2,20 +2,29 @@
 #define ISCREENCAPTURER_H
 
 #include <QObject>
-#include <QScreen>
 #include <QPixmap>
-#include <QTimer>
-#include <QGuiApplication>
-#include <QElapsedTimer>
 
-class IScreenCapturer {
+
+class IScreenCapturer : public QObject {
 public:
-    IScreenCapturer() = default;
-    ~IScreenCapturer() = default;
+     explicit IScreenCapturer(QObject *parent = nullptr) : QObject(parent) {}
+    ~IScreenCapturer() override = default;
 
-    virtual bool initialize(int screenIndex);
-    virtual QPixmap captureScreen();
+    virtual bool initialize(int screenIndex) = 0;
+    virtual QPixmap captureScreen() = 0;
 
+
+    virtual void setTargetFps(int fps) = 0;
+    virtual int getCurrentFps() const = 0;
+
+signals:
+
+    virtual void screenCaptured(const QPixmap &pixmap) = 0;
+    virtual void fpsUpdated(int fps) = 0;
+
+public slots:
+    virtual void startCapture() = 0;
+    virtual void stopCapture() = 0;
 };
 
 #endif // ISCREENCAPTURER_H
