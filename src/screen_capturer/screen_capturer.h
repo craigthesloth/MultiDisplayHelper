@@ -9,7 +9,7 @@
 #include <QElapsedTimer>
 #include "IScreenCapturer.h"
 
-class ScreenCapturer : public QObject, public IScreenCapturer
+class ScreenCapturer :  public IScreenCapturer
 {
     Q_OBJECT
 

@@ -7,9 +7,12 @@
 #include <QCursor>
 #include <QGuiApplication>
 
-class IMouseController{
+class IMouseController : public QObject {
+
+    Q_OBJECT
+
 public:
-    IMouseController() = default;
+    explicit IMouseController(QObject *parent = nullptr) : QObject(parent){};
     ~IMouseController() = default;
 
     virtual bool initialize(int targetScreenindex) = 0;
@@ -19,8 +22,8 @@ public:
     virtual void sendMouseRelease(const QPoint &position, Qt::MouseButton button = Qt::LeftButton) = 0;
     virtual void sendMouseWheel(const QPoint &position, int delta)= 0;
 
-    virtual QRect getScreenGeometry() = 0;
-    virtual QPoint getScreenOffset() = 0;
+    virtual QRect getScreenGeometry() const = 0;
+    virtual QPoint getScreenOffset() const = 0;
 
 };
 

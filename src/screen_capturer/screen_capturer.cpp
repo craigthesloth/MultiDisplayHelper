@@ -2,7 +2,7 @@
 #include <QDebug>
 
 ScreenCapturer::ScreenCapturer(QObject *parent)
-    : QObject(parent),
+    : IScreenCapturer(parent),
     targetScreen(nullptr),
     captureTimer(new QTimer(this)),
     targetFps(45),

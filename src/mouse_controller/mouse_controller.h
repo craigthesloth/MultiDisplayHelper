@@ -12,7 +12,7 @@
 #include <windows.h>
 #endif
 
-class MouseController : public QObject, public IMouseController
+class MouseController : public IMouseController
 {
     Q_OBJECT
 
@@ -26,8 +26,8 @@ public:
     void sendMouseRelease(const QPoint &position, Qt::MouseButton button = Qt::LeftButton) override;
     void sendMouseWheel(const QPoint &position, int delta) override;
 
-    QRect getScreenGeometry() const;
-    QPoint getScreenOffset() const;
+    QRect getScreenGeometry() const override;
+    QPoint getScreenOffset() const override;
 
 private:
     QPoint convertToVirtualDesktopCoordinates(const QPoint &screenLocalPos) const;

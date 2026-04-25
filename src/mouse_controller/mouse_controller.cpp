@@ -3,7 +3,9 @@
 #include <QScreen>
 
 MouseController::MouseController(QObject *parent)
-    : QObject(parent), targetScreenIndex(-1), targetScreen(nullptr)
+    : IMouseController(parent)
+    , targetScreenIndex(-1)
+    , targetScreen(nullptr)
 {
 }
 

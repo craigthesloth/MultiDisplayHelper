@@ -1,8 +1,9 @@
 #include "mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
-#include "mouse_controller.h"
+
 #include "screen_capturer.h"
+#include "mouse_controller.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
