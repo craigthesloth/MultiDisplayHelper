@@ -126,6 +126,8 @@ void MainWindow::setupConnections()
 
     connect(screenWidget, &ScreenWidget::mouseWheel,
             this, &MainWindow::onMouseWheel);
+
+    qDebug() << "Connections are set up";
 }
 
 void MainWindow::updateScreenList()

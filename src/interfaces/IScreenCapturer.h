@@ -22,8 +22,8 @@ public:
 
 signals:
 
-    virtual void screenCaptured(const QPixmap &pixmap);
-    virtual void fpsUpdated(int fps);
+    void screenCaptured(const QPixmap &pixmap);
+    void fpsUpdated(int fps);
 
 public slots:
     virtual void startCapture() = 0;

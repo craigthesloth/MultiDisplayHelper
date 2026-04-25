@@ -55,6 +55,7 @@ else()
             src/interfaces/IScreenCapturer.h
             src/interfaces/IPopOutWindow.h
 
+
         )
     endif()
 endif()
