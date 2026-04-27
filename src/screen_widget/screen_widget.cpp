@@ -5,7 +5,7 @@
 #include <QScreen>
 
 ScreenWidget::ScreenWidget(QWidget *parent)
-    : QWidget(parent),
+    :
     scaleFactor(1.0),
     imageOffset(0, 0),
     remoteCursorPos(0, 0),
