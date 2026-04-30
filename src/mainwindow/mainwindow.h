@@ -9,9 +9,9 @@
 #include <QComboBox>
 #include <QSpinBox>
 
-#include "../screen_capturer/screen_capturer.h"
-#include "../mouse_controller/mouse_controller.h"
-#include "../screen_widget/screen_widget.h"
+#include "IScreenCapturer.h"
+#include "IMouseController.h"
+#include "screen_widget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -20,6 +20,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    void init();
 
 private slots:
     void onScreenCaptured(const QPixmap &pixmap);
@@ -46,8 +48,8 @@ private:
     void setupConnections();
     void updateScreenList();
 
-    ScreenCapturer *screenCapturer;
-    MouseController *mouseController;
+    IScreenCapturer *screenCapturer = nullptr;
+    IMouseController *mouseController = nullptr;
     ScreenWidget *screenWidget;
 
     QComboBox *screenSelector;

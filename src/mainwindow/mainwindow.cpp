@@ -2,6 +2,9 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include "screen_capturer.h"
+#include "mouse_controller.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , screenCapturer(new ScreenCapturer(this))
@@ -17,6 +20,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete mouseController;
+    mouseController = nullptr;
+
+    delete screenCapturer;
+    screenCapturer = nullptr;
+
+    delete screenWidget;
+    screenWidget = nullptr;
 }
 
 void MainWindow::setupUI()
@@ -51,7 +62,7 @@ void MainWindow::setupUI()
     controlLayout->addWidget(fpsLabel);
     controlLayout->addWidget(statusLabel);
     controlLayout->addStretch();
-     controlLayout->addWidget(aboutButton);
+    controlLayout->addWidget(aboutButton);
 
 
     QWidget *controlWidget = new QWidget();
@@ -68,18 +79,18 @@ void MainWindow::setupUI()
     fpsSpinBox->setMaximumWidth(80);
     startButton->setFixedWidth(100);
     stopButton->setFixedWidth(100);
-     fullscreenButton->setFixedWidth(100);
+    fullscreenButton->setFixedWidth(100);
     statusLabel->setMinimumWidth(200);
 
-    setWindowTitle("MultiDisplayHelper");
+    setWindowTitle("Multi-Display Helper");
     resize(1000, 700);
 }
 
 void MainWindow::setupConnections()
 {
-    connect(screenCapturer, &ScreenCapturer::screenCaptured,
+    connect(screenCapturer, &IScreenCapturer::screenCaptured,
             this, &MainWindow::onScreenCaptured);
-    connect(screenCapturer, &ScreenCapturer::fpsUpdated,
+    connect(screenCapturer, &IScreenCapturer::fpsUpdated,
             this, &MainWindow::onFpsUpdated);
 
     connect(startButton, &QPushButton::clicked,
@@ -115,6 +126,8 @@ void MainWindow::setupConnections()
 
     connect(screenWidget, &ScreenWidget::mouseWheel,
             this, &MainWindow::onMouseWheel);
+
+    qDebug() << "Connections are set up";
 }
 
 void MainWindow::updateScreenList()
@@ -140,10 +153,12 @@ void MainWindow::updateScreenList()
 void MainWindow::onScreenCaptured(const QPixmap &pixmap)
 {
     screenWidget->setScreenImage(pixmap);
-
+    update();
     statusLabel->setText(QString("Capturing... %1x%2")
                              .arg(pixmap.width())
                              .arg(pixmap.height()));
+
+
 }
 
 void MainWindow::onFpsUpdated(int fps)

@@ -4,36 +4,34 @@
 #include <QObject>
 #include <QPoint>
 #include <QRect>
-#include <QCursor>
-#include <QGuiApplication>
+#include <QScreen>
+#include <memory>
+#include "IMouseController.h"
+#include "IMouseHandler.h"
 
-#ifdef Q_OS_WIN
-#include <windows.h>
-#endif
-
-class MouseController : public QObject
+class MouseController : public IMouseController
 {
     Q_OBJECT
-
 public:
     explicit MouseController(QObject *parent = nullptr);
 
-    bool initialize(int targetScreenIndex);
-    void sendMouseClick(const QPoint &position, Qt::MouseButton button = Qt::LeftButton);
-    void sendMouseMove(const QPoint &position);
-    void sendMousePress(const QPoint &position, Qt::MouseButton button = Qt::LeftButton);
-    void sendMouseRelease(const QPoint &position, Qt::MouseButton button = Qt::LeftButton);
-    void sendMouseWheel(const QPoint &position, int delta);
+    bool initialize(int targetScreenIndex) override;
+    void sendMouseClick(const QPoint &position, Qt::MouseButton button = Qt::LeftButton) override;
+    void sendMouseMove(const QPoint &position) override;
+    void sendMousePress(const QPoint &position, Qt::MouseButton button = Qt::LeftButton) override;
+    void sendMouseRelease(const QPoint &position, Qt::MouseButton button = Qt::LeftButton) override;
+    void sendMouseWheel(const QPoint &position, int delta) override;
 
-    QRect getScreenGeometry() const;
-    QPoint getScreenOffset() const;
+    QRect getScreenGeometry() const override;
+    QPoint getScreenOffset() const override;
 
 private:
     QPoint convertToVirtualDesktopCoordinates(const QPoint &screenLocalPos) const;
 
     QRect screenGeometry;
-    int targetScreenIndex;
-    QScreen *targetScreen;
+    int targetScreenIndex = -1;
+    QScreen *targetScreen = nullptr;
+    std::unique_ptr<IMouseHandler> platformMouse;
 };
 
 #endif

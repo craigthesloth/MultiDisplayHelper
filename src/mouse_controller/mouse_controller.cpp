@@ -2,9 +2,22 @@
 #include <QDebug>
 #include <QScreen>
 
+#ifdef Q_OS_WIN
+#include "MouseHandlerWin.h"
+#else
+#include "MouseHandlerLinux.h"
+#endif
+
 MouseController::MouseController(QObject *parent)
-    : QObject(parent), targetScreenIndex(-1), targetScreen(nullptr)
+    : IMouseController(parent)
+    , targetScreenIndex(-1)
+    , targetScreen(nullptr)
 {
+#ifdef Q_OS_WIN
+    platformMouse = std::make_unique<MouseHandlerWin>();
+#else
+    platformMouse = std::make_unique<MouseHandlerLinux>();
+#endif
 }
 
 bool MouseController::initialize(int screenIndex)
@@ -56,78 +69,30 @@ void MouseController::sendMouseClick(const QPoint &position, Qt::MouseButton but
     sendMousePress(position, button);
     sendMouseRelease(position, button);
 }
+
 void MouseController::sendMouseMove(const QPoint &position)
 {
-    QPoint virtualPos = convertToVirtualDesktopCoordinates(position);
-
-    qDebug() << "Moving mouse to:" << virtualPos << "(local:" << position << ")";
-
-#ifdef Q_OS_WIN
-    if (SetCursorPos(virtualPos.x(), virtualPos.y())) {
-
-    } else {
-        qDebug() << "SetCursorPos failed. Error:" << GetLastError();
-    }
-#endif
+    QPoint vPos = convertToVirtualDesktopCoordinates(position);
+    platformMouse->moveCursor(vPos.x(), vPos.y());
 }
 
 void MouseController::sendMousePress(const QPoint &position, Qt::MouseButton button)
 {
-    QPoint virtualPos = convertToVirtualDesktopCoordinates(position);
-
-#ifdef Q_OS_WIN
-
-    SetCursorPos(virtualPos.x(), virtualPos.y());
-
-    INPUT input = {0};
-    input.type = INPUT_MOUSE;
-
-    if (button == Qt::LeftButton) {
-        input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-    } else if (button == Qt::RightButton) {
-        input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
-    } else if (button == Qt::MiddleButton) {
-        input.mi.dwFlags = MOUSEEVENTF_MIDDLEDOWN;
-    }
-
-    SendInput(1, &input, sizeof(INPUT));
-#endif
+    QPoint vPos = convertToVirtualDesktopCoordinates(position);
+    platformMouse->moveCursor(vPos.x(), vPos.y());
+    platformMouse->pressButton(button);
 }
 
 void MouseController::sendMouseRelease(const QPoint &position, Qt::MouseButton button)
 {
-    QPoint virtualPos = convertToVirtualDesktopCoordinates(position);
-
-#ifdef Q_OS_WIN
-   SetCursorPos(virtualPos.x(), virtualPos.y());
-
-    INPUT input = {0};
-    input.type = INPUT_MOUSE;
-
-    if (button == Qt::LeftButton) {
-        input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-    } else if (button == Qt::RightButton) {
-        input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
-    } else if (button == Qt::MiddleButton) {
-        input.mi.dwFlags = MOUSEEVENTF_MIDDLEUP;
-    }
-
-    SendInput(1, &input, sizeof(INPUT));
-#endif
+    QPoint vPos = convertToVirtualDesktopCoordinates(position);
+    platformMouse->moveCursor(vPos.x(), vPos.y());
+    platformMouse->releaseButton(button);
 }
 
 void MouseController::sendMouseWheel(const QPoint &position, int delta)
 {
-    QPoint virtualPos = convertToVirtualDesktopCoordinates(position);
-
-#ifdef Q_OS_WIN
-    SetCursorPos(virtualPos.x(), virtualPos.y());
-
-    INPUT input = {0};
-    input.type = INPUT_MOUSE;
-    input.mi.mouseData = delta;
-    input.mi.dwFlags = MOUSEEVENTF_WHEEL;
-
-    SendInput(1, &input, sizeof(INPUT));
-#endif
+    QPoint vPos = convertToVirtualDesktopCoordinates(position);
+    platformMouse->moveCursor(vPos.x(), vPos.y());
+    platformMouse->wheel(delta);
 }

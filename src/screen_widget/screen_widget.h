@@ -8,7 +8,9 @@
 #include <QWheelEvent>
 #include <QTimer>
 
-class ScreenWidget : public QWidget
+#include "IWindowWidget.h"
+
+class ScreenWidget : public IWindowWidget
 {
     Q_OBJECT
 
@@ -22,12 +24,6 @@ public:
 
     void updateRemoteCursorPosition();
 
-signals:
-    void mouseClicked(const QPoint &position, Qt::MouseButton button);
-    void mouseMoved(const QPoint &position);
-    void mousePressed(const QPoint &position, Qt::MouseButton button);
-    void mouseReleased(const QPoint &position, Qt::MouseButton button);
-    void mouseWheel(const QPoint &position, int delta);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -50,6 +46,10 @@ private:
 
     QPoint remoteCursorPos;
     QTimer* cursorUpdateTimer;
+
+    //Drug'n'drop feature
+    bool isDragging = false;
+    Qt::MouseButton draggingButton = Qt::NoButton;
 };
 
 #endif
