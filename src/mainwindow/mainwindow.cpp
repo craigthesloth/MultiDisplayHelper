@@ -62,7 +62,7 @@ void MainWindow::setupUI()
     controlLayout->addWidget(fpsLabel);
     controlLayout->addWidget(statusLabel);
     controlLayout->addStretch();
-     controlLayout->addWidget(aboutButton);
+    controlLayout->addWidget(aboutButton);
 
 
     QWidget *controlWidget = new QWidget();
@@ -79,10 +79,10 @@ void MainWindow::setupUI()
     fpsSpinBox->setMaximumWidth(80);
     startButton->setFixedWidth(100);
     stopButton->setFixedWidth(100);
-     fullscreenButton->setFixedWidth(100);
+    fullscreenButton->setFixedWidth(100);
     statusLabel->setMinimumWidth(200);
 
-    setWindowTitle("MultiDisplayHelper");
+    setWindowTitle("Multi-Display Helper");
     resize(1000, 700);
 }
 
@@ -153,10 +153,12 @@ void MainWindow::updateScreenList()
 void MainWindow::onScreenCaptured(const QPixmap &pixmap)
 {
     screenWidget->setScreenImage(pixmap);
-
+    update();
     statusLabel->setText(QString("Capturing... %1x%2")
                              .arg(pixmap.width())
                              .arg(pixmap.height()));
+
+
 }
 
 void MainWindow::onFpsUpdated(int fps)

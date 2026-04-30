@@ -6,7 +6,14 @@
 #include <QTimer>
 #include <QGuiApplication>
 #include <QElapsedTimer>
+#include <QVideoFrame>
+#include <QMediaCaptureSession>
+#include <QVideoSink>
 #include "IScreenCapturer.h"
+
+QT_BEGIN_NAMESPACE
+class QScreenCapture;
+QT_END_NAMESPACE
 
 class ScreenCapturer : public IScreenCapturer
 {
@@ -27,17 +34,26 @@ public slots:
 
 private slots:
     void onCaptureTimeout();
+    void onFrameChanged(QVideoFrame frame);
 
 private:
     void updateFpsCounter();
+    void startWaylandCapture();
+    void stopWaylandCapture();
 
-    QScreen *targetScreen;
-    QTimer *captureTimer;
+    QScreen *targetScreen = nullptr;
+    QTimer *captureTimer = nullptr;
     QElapsedTimer frameTimer;
-    int targetFps;
-    int currentFps;
-    int frameCount;
-    qint64 lastFpsUpdate;
+    int targetFps = 45;
+    int currentFps = 0;
+    int frameCount = 0;
+    qint64 lastFpsUpdate = 0;
+
+    // Wayland / мультимедийный захват
+    QScreenCapture *waylandCapture = nullptr;
+    bool useWayland = false;
+    QMediaCaptureSession *captureSession = nullptr;
+    QVideoSink *videoSink = nullptr;
 };
 
 #endif

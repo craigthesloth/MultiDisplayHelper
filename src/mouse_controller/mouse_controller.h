@@ -4,18 +4,14 @@
 #include <QObject>
 #include <QPoint>
 #include <QRect>
-#include <QCursor>
-#include <QGuiApplication>
-#include <IMouseController.h>
-
-#ifdef Q_OS_WIN
-#include <windows.h>
-#endif
+#include <QScreen>
+#include <memory>
+#include "IMouseController.h"
+#include "IMouseHandler.h"
 
 class MouseController : public IMouseController
 {
     Q_OBJECT
-
 public:
     explicit MouseController(QObject *parent = nullptr);
 
@@ -33,8 +29,9 @@ private:
     QPoint convertToVirtualDesktopCoordinates(const QPoint &screenLocalPos) const;
 
     QRect screenGeometry;
-    int targetScreenIndex;
-    QScreen *targetScreen;
+    int targetScreenIndex = -1;
+    QScreen *targetScreen = nullptr;
+    std::unique_ptr<IMouseHandler> platformMouse;
 };
 
 #endif

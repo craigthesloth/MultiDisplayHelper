@@ -5,12 +5,17 @@
 #include <QPoint>
 
 #include "IPopOutWindow.h"
-#include "screen_widget.h"
+#include "IWindowWidget.h"
 
 class PopOutWindow :  public IPopOutWindow
 {
 public:
-    PopOutWindow();
+
+    explicit PopOutWindow (QWidget *parent = nullptr, IWindowWidget *scrWidget = nullptr): screenWidget(scrWidget) {};
+
+private:
+
+    IWindowWidget *screenWidget = nullptr;
 };
 
 #endif // POPOUT_WINDOW_H
