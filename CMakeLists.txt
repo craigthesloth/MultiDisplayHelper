@@ -41,8 +41,10 @@ set(PROJECT_SOURCES
     src/interfaces/IMouseHandler.h
     src/interfaces/IWindowWidget.h
     src/interfaces/IPopOutWindow.h
+    src/interfaces/ICaptureCoordinator.h
 
-
+    src/main_logic/CaptureCoordinator.h
+    src/main_logic/CaptureCoordinator.cpp
 
 )
 
@@ -60,7 +62,9 @@ else()
 endif()
 
 
-qt_add_executable(MultiDisplayHelper ${PROJECT_SOURCES})
+qt_add_executable(MultiDisplayHelper ${PROJECT_SOURCES}
+
+    )
 
 target_include_directories(MultiDisplayHelper PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/popout_window
@@ -71,6 +75,8 @@ target_include_directories(MultiDisplayHelper PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mouse_controller/linux
     ${CMAKE_CURRENT_SOURCE_DIR}/src/screen_capturer
     ${CMAKE_CURRENT_SOURCE_DIR}/src/interfaces
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main_logic
+
 )
 
 target_link_libraries(MultiDisplayHelper PRIVATE Qt6::Widgets
