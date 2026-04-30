@@ -13,7 +13,7 @@ A Qt-based tool for capturing and controlling multiple screens remotely. This ap
 
 ## Requirements
 
-- Qt 5 or Qt 6
+- Qt 6.5+
 - C++17 compatible compiler
 - CMake 3.16 or higher
 - Windows (for mouse control functionality)
