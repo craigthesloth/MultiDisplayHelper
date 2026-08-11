@@ -5,11 +5,12 @@
 #include "screen_capturer.h"
 #include "mouse_controller.h"
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent, Mercury::ThreadPool* p)
     : QMainWindow(parent)
-    , screenCapturer(new ScreenCapturer(this))
+    , screenCapturer(new ScreenCapturer(this, p))
     , mouseController(new MouseController(this))
     , screenWidget(new ScreenWidget(this))
+    , m_threadpool(p)
 {
     setupUI();
     setupConnections();

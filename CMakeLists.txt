@@ -2,11 +2,12 @@ cmake_minimum_required(VERSION 3.28+)
 
 project(MultiDisplayHelper VERSION 0.2 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
+
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets
                                      Gui
@@ -46,6 +47,8 @@ set(PROJECT_SOURCES
     src/main_logic/CaptureCoordinator.h
     src/main_logic/CaptureCoordinator.cpp
 
+    src/lib/mercury.hpp
+
 )
 
 
@@ -76,6 +79,7 @@ target_include_directories(MultiDisplayHelper PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/screen_capturer
     ${CMAKE_CURRENT_SOURCE_DIR}/src/interfaces
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main_logic
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/
 
 )
 
@@ -83,6 +87,7 @@ target_link_libraries(MultiDisplayHelper PRIVATE Qt6::Widgets
                                                  Qt6::Gui
                                                  Qt6::Multimedia
 )
+
 
 if(WIN32)
     target_link_libraries(MultiDisplayHelper PRIVATE user32 gdi32)

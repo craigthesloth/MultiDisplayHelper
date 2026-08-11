@@ -3,14 +3,17 @@
 #include <QScreenCapture>
 #include <QImage>
 
-ScreenCapturer::ScreenCapturer(QObject *parent)
-    : IScreenCapturer(parent),
+ScreenCapturer::ScreenCapturer(QObject *parent, Mercury::ThreadPool* p)
+    : 
+    IScreenCapturer(parent),
     targetScreen(nullptr),
     captureTimer(new QTimer(this)),
     targetFps(45),
     currentFps(0),
     frameCount(0),
-    lastFpsUpdate(0)
+    lastFpsUpdate(0),
+    m_pool(p)
+    
 {
     captureTimer->setTimerType(Qt::PreciseTimer);
     connect(captureTimer, &QTimer::timeout, this, &ScreenCapturer::onCaptureTimeout);

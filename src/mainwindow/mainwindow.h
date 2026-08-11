@@ -13,12 +13,14 @@
 #include "IMouseController.h"
 #include "screen_widget.h"
 
+#include "../lib/mercury.hpp"
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr, Mercury::ThreadPool* p = nullptr);
     ~MainWindow();
 
     void init();
@@ -64,6 +66,8 @@ private:
     QLabel *fpsLabel;
 
     bool isFullscreen = false;
+
+    Mercury::ThreadPool* m_threadpool = nullptr;
 };
 
 #endif

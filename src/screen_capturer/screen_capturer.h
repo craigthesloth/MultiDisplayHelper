@@ -10,6 +10,7 @@
 #include <QMediaCaptureSession>
 #include <QVideoSink>
 #include "IScreenCapturer.h"
+#include "mercury.hpp"
 
 QT_BEGIN_NAMESPACE
 class QScreenCapture;
@@ -20,17 +21,20 @@ class ScreenCapturer : public IScreenCapturer
     Q_OBJECT
 
 public:
-    explicit ScreenCapturer(QObject *parent = nullptr);
+    explicit ScreenCapturer(QObject *parent = nullptr, Mercury::ThreadPool* = nullptr);
     ~ScreenCapturer();
 
     bool initialize(int screenIndex = 1) override;
     QPixmap captureScreen() override;
     void setTargetFps(int fps) override;
     int getCurrentFps() const override;
+    void setThreadPool(Mercury::ThreadPool* p = nullptr);
+
 
 public slots:
     void startCapture() override;
     void stopCapture() override;
+    void stopCaptureWithPool() override;
 
 private slots:
     void onCaptureTimeout();
@@ -54,6 +58,8 @@ private:
     bool useWayland = false;
     QMediaCaptureSession *captureSession = nullptr;
     QVideoSink *videoSink = nullptr;
+
+    Mercury::ThreadPool* m_pool;
 };
 
 #endif
